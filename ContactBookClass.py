@@ -3,7 +3,7 @@ import json
 class Contactbook:
   def __init__(self):
     try:
-      with open("contacts.json","r") as file:
+      with open("BeginnerProjects/.gitignore/contacts.json","r") as file:
         self.contacts = json.load(file)
     except FileNotFoundError:
       self.contacts = {}
@@ -12,7 +12,7 @@ class Contactbook:
     name = input("\nEnter name to save: ")
     phone_no = input("Enter Phone Number to save: ")
     self.contacts[name] = phone_no
-    with open("contacts.json","w") as file:
+    with open("BeginnerProjects/.gitignore/contacts.json","w") as file:
       json.dump(self.contacts,file)
     print("Contact Saved\n")
 
@@ -33,7 +33,7 @@ class Contactbook:
     if name in self.contacts:
       del self.contacts[name]
       print("Contact deleted\n")
-      with open("contacts.json","w") as file:
+      with open("BeginnerProjects/.gitignore/contacts.json","w") as file:
         json.dump(self.contacts,file)
     else:
       print("Contact not found\n")
@@ -45,17 +45,23 @@ options = ["1. View Contacts","2. Save Contacts", "3. Search Contacts", "4. Dele
 while True:
   for i in options:
    print(i)
-
-  choice = int(input("\nEnter which function to perform: "))
-
-  match choice:
-    case 1:
-      book.view_contacts()
-    case 2:
-      book.save_contacts()
-    case 3:
-      book.search_contact()
-    case 4:
-      book.delet_contact()
-    case 5:
-      break
+  try:
+    choice = int(input("\nEnter which function to perform: "))
+    if choice <6 and choice > 0:
+      match choice:
+        case 1:
+          book.view_contacts()
+        case 2:
+          book.save_contacts()
+        case 3:
+          book.search_contact()
+        case 4:
+          book.delet_contact()
+        case 5:
+          break
+    else:
+      print("Enter a valid choice")
+      continue
+  except ValueError:
+    print("Please enter the integer corresponding to the desired function")
+    continue
