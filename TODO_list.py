@@ -37,8 +37,10 @@ def sort_task():
 
 def remove_task():
     while True:
-        name = input("Enter task title to remove: ")
-        if name in task_list:
+        name = input("Enter task title to remove(Enter 'q' to exit): \n")
+        if name == 'q' or name == 'Q':
+            break
+        elif name in task_list:
             del task_list[name]
             with open ("TODO.json","w") as file:
                 json.dump(task_list,file)
@@ -49,23 +51,65 @@ def remove_task():
             if reprompt != 'r' and reprompt != 'R':
                 break
 
+def edit_task():
+    while True:
+        name = input("Enter the task title to edit: \n")
+        fields = ["1 -> Task title","2 -> Task discription","3 -> Due Date","4 ->Exit"]
+        if name in task_list:
+            while True:
+                for i in fields: print(i)
+                try:
+                    field = int(input("Enter which field to edit:\n"))
+                    match field:
+                        case 1:
+                            task_title = input("Enter new task title:\n")
+                            task_list[task_title] = task_list.pop(name)
+                            name = task_title
+                        case 2:
+                            task_discription = input("Enter new task discription:\n")
+                            task_list[name]["Discription"] = task_discription
+                        case 3:
+                            due_date = input("Enter new due date(DD-MM-YYYY) :\n")
+                            task_list[name]["Due Date"] = due_date
+                        case 4:
+                            return
+                        case _:
+                            print("Invalid choice")
+                    with open("TODO.json","w") as file:
+                        json.dump(task_list,file)
+
+                except ValueError:
+                    print("Invalid Input")
+        else :
+            reprompt = input("Could not find a task with that title. Enter 'r' to retry: \n")
+            if reprompt.lower() != 'r':
+                break
+
+
+
 
 def menu():    
-    options = ["1 -> Add Task","2 -> View Tasks","3 -> Remove Task","4 -> Exit"]
+    options = ["1 -> Add Task","2 -> View Tasks","3 -> Edit Task","4 -> Remove Task","5 -> Exit"]
     while True:
         for i in options:
             print(i)
-        choice = int(input("Enter your choice: "))
-
-        match choice:
-            case 1:
-                add_task()
-            case 2:
-                view_task()
-            case 3:
-                remove_task()
-            case 4:
-                break
+        try:
+            choice = int(input("Enter your choice: "))
+            match choice:
+                case 1:
+                    add_task()
+                case 2:
+                    view_task()
+                case 3:
+                    edit_task()
+                case 4:
+                    remove_task()
+                case 5:
+                    break
+                case _ :
+                    print("Enter a valid choice")
+        except ValueError:
+            print("Invalid input")
 
 menu()
 
