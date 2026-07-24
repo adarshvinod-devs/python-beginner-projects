@@ -53,18 +53,27 @@ def remove_task():
 
 def edit_task():
     while True:
-        name = input("Enter the task title to edit: \n")
+        name = input("Enter the task title to edit(Enter 'q' to exit): \n")
         fields = ["1 -> Task title","2 -> Task discription","3 -> Due Date","4 ->Exit"]
-        if name in task_list:
+        if name == 'q' or name == 'Q':
+            break
+        elif name in task_list:
             while True:
                 for i in fields: print(i)
                 try:
                     field = int(input("Enter which field to edit:\n"))
                     match field:
                         case 1:
-                            task_title = input("Enter new task title:\n")
-                            task_list[task_title] = task_list.pop(name)
-                            name = task_title
+                            while True:
+                                task_title = input("Enter new task title:\n")
+                                if task_title ==  'q' or task_title == 'Q':
+                                    break
+                                elif task_title in task_list:
+                                    print("A task already exits with that name pleas try a new one(press 'q' to exit)")
+                                else:
+                                    task_list[task_title] = task_list.pop(name)
+                                    name = task_title
+                                    break
                         case 2:
                             task_discription = input("Enter new task discription:\n")
                             task_list[name]["Discription"] = task_discription
